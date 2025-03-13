@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 1.11.0"
+  required_version = "~> 1.5.0, < 1.12"
 
   required_providers {
     oci = {
@@ -43,8 +43,9 @@ provider "helm" {
     insecure               = var.oke_insecure
     exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "docker"
-      args        = ["run", "--rm", "-it", "-v", "/home/michel/.oci:/oracle/.oci", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", var.oke_cluster_id, "--region", var.region]
+      command     = "oci-cli"
+      # args        = ["run", "--rm", "-it", "-v", "/home/michel/.oci:/oracle/.oci", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", var.oke_cluster_id, "--region", var.region]
+      args        = ["ce", "cluster", "generate-token", "--cluster-id", var.oke_cluster_id, "--region", var.region]
     }
   }
   experiments = {

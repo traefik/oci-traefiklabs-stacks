@@ -4,9 +4,7 @@ variable "fingerprint" {}
 variable "private_key_path" {}
 variable "region" {}
 
-variable "oke_cluster_id" {
-  type = string
-}
+variable "oke_cluster_id" {}
 
 variable "oke_insecure" {
   type    = bool

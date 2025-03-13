@@ -45,6 +45,7 @@ variableGroups:
 ##############    HIDDEN VARIABLES       #############
 ######################################################
 
+variables:
 
   tenancy_ocid:
     type: string
@@ -63,7 +64,7 @@ variableGroups:
 ######################################################
 
   oke_cluster_id:
-    type: oci:container:cluster:id
+    type: string
     required: true
     title: OKE Cluster ID
     description: The ID of the OKE cluster
