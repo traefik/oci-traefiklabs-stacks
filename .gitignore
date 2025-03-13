@@ -1,0 +1,16 @@
+# terraform
+.terraform.lock.hcl
+**/.terraform/*
+terraform/third_party/github/gh_runner_webhook/gh-runner-webhook
+## WARNING: DO NOT REMOVE THIS, THERE'S A RISK OF COMMITING TF SECRETS
+*.tfvars
+*.tfvars.json
+*.tfstate
+*.tfstate.*
+
+# vim temporary files
+*.swp
+*.swo
+
+# release file
+*.zip
