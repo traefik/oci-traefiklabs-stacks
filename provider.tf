@@ -14,11 +14,12 @@ terraform {
 }
 
 provider "oci" {
-  tenancy_ocid     = var.tenancy_ocid
-  user_ocid        = var.user_ocid
-  fingerprint      = var.fingerprint
-  private_key_path = var.private_key_path
-  region           = var.region
+  tenancy_ocid = var.tenancy_ocid
+  region       = var.region
+
+  # user_ocid        = var.user_ocid
+  # fingerprint      = var.fingerprint
+  # private_key_path = var.private_key_path
 }
 
 
@@ -27,7 +28,7 @@ data "oci_containerengine_cluster" "target" {
 }
 
 data "oci_containerengine_cluster_kube_config" "target" {
-  cluster_id = data.oci_containerengine_cluster.target.id
+  cluster_id = var.oke_cluster_id
 }
 
 locals {
@@ -43,9 +44,9 @@ provider "helm" {
     insecure               = var.oke_insecure
     exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "oci-cli"
+      command     = "docker"
       # args        = ["run", "--rm", "-it", "-v", "/home/michel/.oci:/oracle/.oci", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", var.oke_cluster_id, "--region", var.region]
-      args        = ["ce", "cluster", "generate-token", "--cluster-id", var.oke_cluster_id, "--region", var.region]
+      args = ["run", "--rm", "-t", "-u", "1101:1101", "-v", "/home/orm:/home/orm", "-e", "OCI_CLI_AUTH", "-e", "OCI_CLI_CONFIG_FILE", "-e", "OCI_CLI_CLOUD_SHELL", "-e", "OCI_CLI_USE_INSTANCE_METADATA_SERVICE", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", var.oke_cluster_id,"--region", var.region ]
     }
   }
   experiments = {

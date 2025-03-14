@@ -1,7 +1,4 @@
 variable "tenancy_ocid" {}
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
 variable "region" {}
 
 variable "oke_cluster_id" {}
@@ -18,3 +15,7 @@ variable "chart_values" {
 variable "chart_namespace" {
   type = string
 }
+
+# variable "user_ocid" {}
+# variable "fingerprint" {}
+# variable "private_key_path" {}
