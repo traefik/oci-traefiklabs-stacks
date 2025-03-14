@@ -1,4 +1,6 @@
 resource "kubernetes_namespace" "traefik" {
+  count = var.chart_create_namespace ? 1 : 0
+
   metadata {
     name = var.chart_namespace
   }

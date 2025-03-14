@@ -26,6 +26,7 @@ variableGroups:
 #"variables used internally - not exposed to end user"
       - tenancy_ocid
       - region
+      - marketplace_source_images
       - mp_listing_id
       - mp_listing_resource_id
       - mp_listing_resource_version
@@ -38,6 +39,7 @@ variableGroups:
 
   - title: "Chart Configuration"
     variables:
+      - chart_create_namespace
       - chart_namespace
       - chart_hub_token
       - chart_hub_version
@@ -99,6 +101,11 @@ variables:
     type: string
     required: false
     title: Target namespace
+
+  chart_create_namespace:
+    type: boolean
+    title: Create target namespace
+    description: "Enable it only if the namespace does not exist"
 
 #############################################
 ###########    OUTPUT GROUPS     ############

@@ -23,3 +23,8 @@ variable "chart_hub_version" {
 variable "chart_namespace" {
   type = string
 }
+
+variable "chart_create_namespace" {
+  type = bool
+  default = false
+}
