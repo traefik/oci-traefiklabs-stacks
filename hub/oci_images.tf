@@ -5,15 +5,15 @@
 
 variable "marketplace_source_images" {
   type = map(object({
-    ocid = string
+    ocid                  = string
     is_pricing_associated = bool
-    compatible_shapes = list(string)
+    compatible_shapes     = list(string)
   }))
   default = {
     main_mktpl_image = {
-      ocid = "ocid1.image.oc1..<unique_id>"
+      ocid                  = "ocid1.image.oc1..<unique_id>"
       is_pricing_associated = false
-      compatible_shapes = []
+      compatible_shapes     = []
     }
     #Remove comment and add as many marketplace images that your stack references be replicated to other realms
     #supporting_image = {

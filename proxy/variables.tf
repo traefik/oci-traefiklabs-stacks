@@ -15,7 +15,3 @@ variable "chart_values" {
 variable "chart_namespace" {
   type = string
 }
-
-# variable "user_ocid" {}
-# variable "fingerprint" {}
-# variable "private_key_path" {}

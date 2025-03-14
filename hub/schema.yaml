@@ -1,0 +1,139 @@
+# Title shown in Application Information tab.
+title: Traefik Hub API & AI Gateway
+# Sub Title shown in Application Information tab.
+description: Your APIs deserve better
+schemaVersion: 1.1.0
+version: "20190304"
+
+# URL of Logo Icon used on Application Information tab. You can copy the contentId from the Marketplace listing logo URL in the Marketplace Partner portal.
+# (Optional)
+logoUrl: https://partner.cloudmarketplace.oracle.com/partner/content?contentId=181104877
+
+# Used in Application Information tab to Hyperlink Title and Logo to the Marketplace
+# Listing.
+# Also used to link to Listing Usage section for "View Instructions".
+# (Optional) If it is missing, Application Information uses the
+# "marketplace-listing-id" tag for the same purpose.
+source:
+  type: marketplace
+  reference: 180363128
+
+locale: "en"
+variableGroups:
+  - title: "Hidden Variable Group"
+    visible: false
+    variables:
+#"variables used internally - not exposed to end user"
+      - tenancy_ocid
+      - region
+      - mp_listing_id
+      - mp_listing_resource_id
+      - mp_listing_resource_version
+      - mp_subscription_enabled
+
+  - title: "OKE Configuration"
+    variables:
+      - oke_cluster_id
+      - oke_insecure
+
+  - title: "Chart Configuration"
+    variables:
+      - chart_namespace
+      - chart_hub_token
+      - chart_hub_version
+      - chart_values
+
+######################################################
+##############    HIDDEN VARIABLES       #############
+######################################################
+
+variables:
+
+  tenancy_ocid:
+    type: string
+    title: Tenancy ID
+    description: The Oracle Cloud Identifier (OCID) for your tenancy
+    required: true
+
+  region:
+    type: oci:identity:region:name
+    title: Region
+    description: The region in which to create all resources
+    required: true
+
+######################################################
+##############    REQUIRED VARIABLES     #############
+######################################################
+
+  oke_cluster_id:
+    type: string
+    required: true
+    title: OKE Cluster ID
+    description: The Oracle Cloud ID of the OKE cluster
+
+  oke_insecure:
+    type: boolean
+    title: Allow insecure connection
+    description: It may be needed on private OKE cluster
+
+  chart_hub_token:
+    type: string
+    required: true
+    title: Traefik Hub Token
+    description: "See https://hub.traefik.io/agents/new"
+
+  chart_hub_version:
+    type: string
+    required: true
+    title: Traefik Hub Version
+    description: "vX.Y.Z"
+
+  chart_values:
+    type: text
+    required: true
+    multiline: true
+    title: Traefik Helm Chart values
+    description: "See https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md"
+
+  chart_namespace:
+    type: string
+    required: false
+    title: Target namespace
+
+#############################################
+###########    OUTPUT GROUPS     ############
+#############################################
+
+outputGroups:
+  - title: "Chart output"
+    outputs:
+      - chart_version
+      - chart_status
+      - chart_notes
+
+
+#############################################
+##############     OUTPUTS     ##############
+#############################################
+
+outputs:
+  chart_version:
+    type: string
+    title: Version
+    visible: true
+
+  chart_status:
+    type: string
+    title: Status
+    visible: true
+
+  chart_notes:
+    type: string
+    title: Notes
+    visible: true
+
+# primaryOutputButton is a reference to a link output that creates a primary button
+# on the Application Information tab.
+# (Optional) if not provided, no primary button is shown.  Also if the output
+# referenced is not a link output, no button is shown.
+# primaryOutputButton:
