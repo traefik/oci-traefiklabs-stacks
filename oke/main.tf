@@ -130,6 +130,13 @@ resource "oci_core_security_list" "svclb" {
   compartment_id = var.tenancy_ocid
   display_name   = "oke-svclb-${var.oke_display_name}"
   vcn_id         = oci_core_vcn.traefik-demo.id
+
+  lifecycle {
+    ignore_changes = [
+      egress_security_rules,
+      ingress_security_rules
+    ]
+  }
 }
 
 resource "oci_core_security_list" "nodes" {
@@ -239,6 +246,12 @@ resource "oci_core_security_list" "nodes" {
     }
   }
   vcn_id = oci_core_vcn.traefik-demo.id
+  lifecycle {
+    ignore_changes = [
+      egress_security_rules,
+      ingress_security_rules
+    ]
+  }
 }
 
 resource "oci_core_security_list" "kubernetes_api_endpoint" {
