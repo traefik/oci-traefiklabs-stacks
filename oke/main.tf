@@ -389,7 +389,7 @@ resource "oci_containerengine_node_pool" "traefik-demo" {
       pod_subnet_ids = [oci_core_subnet.nodes.id]
     }
     placement_configs {
-      availability_domain = data.oci_identity_availability_domain.ad1.name
+      availability_domain = data.oci_identity_availability_domain.ad3.name
       subnet_id           = oci_core_subnet.nodes.id
     }
     placement_configs {
@@ -397,13 +397,14 @@ resource "oci_containerengine_node_pool" "traefik-demo" {
       subnet_id           = oci_core_subnet.nodes.id
     }
     placement_configs {
-      availability_domain = data.oci_identity_availability_domain.ad3.name
+      availability_domain = data.oci_identity_availability_domain.ad1.name
       subnet_id           = oci_core_subnet.nodes.id
     }
     size = var.oke_nodes_count
   }
   node_eviction_node_pool_settings {
-    eviction_grace_duration = "PT1H"
+    eviction_grace_duration = "PT5M"
+    is_force_delete_after_grace_duration = true
   }
   node_shape = var.node_shape
   node_shape_config {
