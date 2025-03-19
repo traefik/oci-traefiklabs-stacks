@@ -3,7 +3,7 @@ output "latest_k8s_version" {
 }
 
 data "oci_core_image" "oke" {
-    image_id = local.image_id
+  image_id = local.image_id
 }
 
 output "image_name" {
@@ -12,4 +12,8 @@ output "image_name" {
 
 output "image_id" {
   value = local.image_id
+}
+
+output "cluster_id" {
+  value = oci_containerengine_cluster.traefik-demo.id
 }
