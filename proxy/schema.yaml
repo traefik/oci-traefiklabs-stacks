@@ -26,6 +26,7 @@ variableGroups:
 #"variables used internally - not exposed to end user"
       - tenancy_ocid
       - region
+      - marketplace_source_images
       - mp_listing_id
       - mp_listing_resource_id
       - mp_listing_resource_version
@@ -33,8 +34,20 @@ variableGroups:
 
   - title: "OKE Configuration"
     variables:
-      - oke_cluster_id
+      - oke_cluster_create
       - oke_insecure
+
+  - title: "Create basic OKE"
+    variables:
+      - oke_cluster_name
+    visible: ${oke_cluster_create}
+
+  - title: "Use existing OKE"
+    variables:
+      - oke_cluster_id
+    visible:
+      not:
+        - ${oke_cluster_create}
 
   - title: "Chart Configuration"
     variables:
@@ -65,9 +78,21 @@ variables:
 
   oke_cluster_id:
     type: string
-    required: true
     title: OKE Cluster ID
     description: The ID of the OKE cluster
+
+  oke_cluster_create:
+    type: boolean
+    title: Create basic OKE Cluster
+    description: 3 nodes (VM.Standard.E3.Flex) / 2 OCPU / 4 GB RAM / latest OKE version
+
+  oke_cluster_name:
+    type: string
+    title: Name of OKE Cluster to create
+    default: traefik-demo
+    minLength: 1
+    maxLength: 25
+    pattern: "^[a-z][a-zA-Z0-9-]+$"
 
   oke_insecure:
     type: boolean

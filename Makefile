@@ -1,5 +1,5 @@
 release:
-	@cd proxy; zip -q ../proxy-stack.zip schema.yaml *.tf; cd ..
-	@cd hub; zip -q ../hub-stack.zip schema.yaml *.tf; cd ..
-	@cd hub-apim; zip -q ../hub-apim-stack.zip schema.yaml *.tf; cd ..
+	@bash release.sh proxy
+	@bash release.sh hub
+	@bash release.sh hub-apim
 	@ls -lh *.zip
