@@ -364,7 +364,7 @@ resource "oci_containerengine_cluster" "traefik-demo" {
     }
     service_lb_subnet_ids = [oci_core_subnet.svclb.id]
   }
-  type   = "BASIC_CLUSTER"
+  type   = "ENHANCED_CLUSTER" # "BASIC_CLUSTER"
   vcn_id = oci_core_vcn.traefik-demo.id
 }
 
