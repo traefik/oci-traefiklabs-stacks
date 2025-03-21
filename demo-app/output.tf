@@ -1,7 +1,3 @@
-output "kubernetes_version" {
-  value = data.oci_containerengine_cluster.target.kubernetes_version
-}
-
 output "external_ip" {
   value = local.external_ip_dashed
 }
