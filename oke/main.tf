@@ -33,6 +33,9 @@ locals {
   oracle_linux_images = [for source in local.oke_sources : source.image_id if length(regexall("Oracle-Linux-\\d+\\.\\d+-[0-9.]{10}-\\d+-OKE-${substr(local.kubernetes_version, 1, -1)}-[0-9]*", source.source_name)) > 0]
 
   image_id = local.oracle_linux_images[0]
+
+  core_services = data.oci_core_services.current.services
+  iad_service = local.core_services[index(local.core_services.*.name, "All IAD Services In Oracle Services Network")]
 }
 
 resource "oci_core_vcn" "traefik-demo" {
@@ -59,7 +62,7 @@ resource "oci_core_service_gateway" "traefik-demo" {
   compartment_id = var.tenancy_ocid
   display_name   = var.oke_display_name
   services {
-    service_id = data.oci_core_services.current.services[1].id
+    service_id = local.iad_service.id
   }
   vcn_id = oci_core_vcn.traefik-demo.id
 }
@@ -185,7 +188,7 @@ resource "oci_core_security_list" "nodes" {
   }
   egress_security_rules {
     description      = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
-    destination      = "all-iad-services-in-oracle-services-network"
+    destination      = local.iad_service.cidr_block
     destination_type = "SERVICE_CIDR_BLOCK"
     protocol         = "6"
     stateless        = "false"
