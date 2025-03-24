@@ -12,6 +12,7 @@ locals {
   templatevars = {
     external_ip_dashed = local.external_ip_dashed,
     secret_name = kubernetes_secret.traefik_me-tls.metadata[0].name
+    target_namespace = var.target_namespace
   }
   dashboard_ingressroute = templatefile("${path.module}/ingressroutes/dashboard.tftpl", local.templatevars)
   noauth_ingressroute = templatefile("${path.module}/ingressroutes/no-auth.tftpl", local.templatevars)
@@ -57,7 +58,14 @@ resource "kubernetes_manifest" "dashboard" {
   manifest = yamldecode(local.dashboard_ingressroute)
 }
 
+resource "kubernetes_namespace" "apps" {
+  metadata {
+    name = "apps"
+  }
+}
+
 resource "kubernetes_manifest" "weather-app" {
+  depends_on = [ kubernetes_namespace.apps ]
   for_each = {
     for value in [
       for yaml in split(
@@ -91,6 +99,10 @@ resource "kubernetes_manifest" "basic-auth" {
     ] : "${value["metadata"]["name"]}-${value["kind"]}" => value
   }
   manifest = each.value
+
+  lifecycle {
+    ignore_changes = [ data ]
+  }
 }
 
 resource "kubernetes_manifest" "api-key" {
@@ -114,4 +126,8 @@ resource "kubernetes_manifest" "api-key" {
     ] : "${value["metadata"]["name"]}-${value["kind"]}" => value
   }
   manifest = each.value
+
+  lifecycle {
+    ignore_changes = [ stringData ]
+  }
 }
