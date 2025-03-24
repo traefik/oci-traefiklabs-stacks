@@ -35,7 +35,7 @@ locals {
   image_id = local.oracle_linux_images[0]
 
   core_services = data.oci_core_services.current.services
-  iad_service = local.core_services[index(local.core_services.*.name, "All IAD Services In Oracle Services Network")]
+  network_service = one([for s in local.core_services: s if length(regexall("All [A-Z]+ Services In Oracle Services Network", s.name)) > 0])
 }
 
 resource "oci_core_vcn" "traefik-demo" {
@@ -62,7 +62,7 @@ resource "oci_core_service_gateway" "traefik-demo" {
   compartment_id = var.tenancy_ocid
   display_name   = var.oke_display_name
   services {
-    service_id = local.iad_service.id
+    service_id = local.network_service.id
   }
   vcn_id = oci_core_vcn.traefik-demo.id
 }
@@ -188,7 +188,7 @@ resource "oci_core_security_list" "nodes" {
   }
   egress_security_rules {
     description      = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
-    destination      = local.iad_service.cidr_block
+    destination      = local.network_service.cidr_block
     destination_type = "SERVICE_CIDR_BLOCK"
     protocol         = "6"
     stateless        = "false"
