@@ -25,3 +25,8 @@ variable "chart_values" {
 variable "chart_namespace" {
   type = string
 }
+
+variable "demo_app_create" {
+  type    = bool
+  default = false
+}

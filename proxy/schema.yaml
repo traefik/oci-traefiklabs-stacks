@@ -54,6 +54,10 @@ variableGroups:
       - chart_namespace
       - chart_values
 
+  - title: "Demo Application"
+    variables:
+      - demo_app_create
+
 ######################################################
 ##############    HIDDEN VARIABLES       #############
 ######################################################
@@ -111,6 +115,11 @@ variables:
     required: false
     title: Target namespace
 
+  demo_app_create:
+    type: boolean
+    title: Deploy demo application and ingressroutes
+    description: It will deploy first steps of walkthrough, up to API Key. See https://github.com/traefik/hub/blob/main/WALKTHROUGH.md"
+
 #############################################
 ###########    OUTPUT GROUPS     ############
 #############################################
@@ -122,6 +131,12 @@ outputGroups:
       - chart_status
       - chart_notes
 
+  - title: "Demo application"
+    outputs:
+      - demo_app_dashboard
+      - demo_app_noauth
+      - demo_app_basicauth
+      - demo_app_apikey
 
 #############################################
 ##############     OUTPUTS     ##############
@@ -132,16 +147,27 @@ outputs:
     type: string
     title: Version
     visible: true
-
   chart_status:
     type: string
     title: Status
     visible: true
-
   chart_notes:
     type: string
     title: Notes
     visible: true
+
+  demo_app_dashboard:
+    type: link
+    title: "Traefik - Local Dashboard"
+  demo_app_noauth:
+    type: link
+    title: "Weather API - No Authentication"
+  demo_app_basicauth:
+    type: link
+    title: "Weather API - Basic Authentication"
+  demo_app_apikey:
+    type: link
+    title: "Weather API - API Key"
 
 # primaryOutputButton is a reference to a link output that creates a primary button
 # on the Application Information tab.
