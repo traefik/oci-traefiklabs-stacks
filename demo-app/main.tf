@@ -99,10 +99,6 @@ resource "kubernetes_manifest" "basic-auth" {
     ] : "${value["metadata"]["name"]}-${value["kind"]}" => value
   }
   manifest = each.value
-
-  lifecycle {
-    ignore_changes = [ data ]
-  }
 }
 
 resource "kubernetes_manifest" "api-key" {
@@ -126,8 +122,4 @@ resource "kubernetes_manifest" "api-key" {
     ] : "${value["metadata"]["name"]}-${value["kind"]}" => value
   }
   manifest = each.value
-
-  lifecycle {
-    ignore_changes = [ stringData ]
-  }
 }
