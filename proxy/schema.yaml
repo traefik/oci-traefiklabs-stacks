@@ -115,7 +115,7 @@ variables:
   chart_namespace_create:
     type: boolean
     title: Create target namespace
-    description: Allows to create the namespace when it does not exist
+    description: "Enable it only if the namespace does not exist"
 
 #############################################
 ###########    OUTPUT GROUPS     ############
