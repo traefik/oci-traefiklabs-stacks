@@ -13,16 +13,9 @@ sed -i -e 's#source = "../oke"#source = "./oke"#g' provider.tf
 mkdir oke
 cp ../oke/*.tf oke/
 
-sed -i -e 's#source = "../demo-app"#source = "./demo-app"#g' main.tf
-mkdir demo-app
-cp -rp ../demo-app/{*.tf,ingressroutes,manifests} demo-app/
-
-zip -q "../${TARGET}-stack.zip" schema.yaml *.tf oke/*.tf demo-app/{*.tf,ingressroutes/*.tftpl,manifests/*.yaml}
+zip -q "../${TARGET}-stack.zip" schema.yaml *.tf oke/*.tf
 
 rm -rf oke/
 sed -i -e 's#source = "./oke"#source = "../oke"#g' provider.tf
-
-rm -rf demo-app
-sed -i -e 's#source = "./demo-app"#source = "../demo-app"#g' main.tf
 
 cd ..
