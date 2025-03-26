@@ -9,14 +9,6 @@ terraform {
     helm = {
       version = "3.0.0-pre2"
     }
-    http = {
-      source = "http"
-      version = "3.4.5"
-    }
-    kubernetes = {
-      source  = "kubernetes"
-      version = "2.36.0"
-    }
   }
 }
 
@@ -62,17 +54,5 @@ provider "helm" {
       # args        = ["run", "--rm", "-t", "-v", "/home/michel/.oci:/oracle/.oci", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", data.oci_containerengine_cluster.target.id, "--region", var.region]
       args = ["run", "--rm", "-t", "-u", "1101:1101", "-v", "/home/orm:/home/orm", "-e", "OCI_CLI_AUTH", "-e", "OCI_CLI_CONFIG_FILE", "-e", "OCI_CLI_CLOUD_SHELL", "-e", "OCI_CLI_USE_INSTANCE_METADATA_SERVICE", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", data.oci_containerengine_cluster.target.id, "--region", var.region]
     }
-  }
-}
-
-provider "kubernetes" {
-  host                   = local.cluster_endpoint
-  cluster_ca_certificate = local.cluster_ca_certificate
-  insecure               = var.oke_insecure
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "docker"
-    # args        = ["run", "--rm", "-it", "-v", "/home/michel/.oci:/oracle/.oci", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", data.oci_containerengine_cluster.target.id, "--region", var.region]
-    args = ["run", "--rm", "-t", "-u", "1101:1101", "-v", "/home/orm:/home/orm", "-e", "OCI_CLI_AUTH", "-e", "OCI_CLI_CONFIG_FILE", "-e", "OCI_CLI_CLOUD_SHELL", "-e", "OCI_CLI_USE_INSTANCE_METADATA_SERVICE", "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id", data.oci_containerengine_cluster.target.id, "--region", var.region]
   }
 }

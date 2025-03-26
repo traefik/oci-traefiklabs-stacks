@@ -26,6 +26,11 @@ variable "chart_namespace" {
   type = string
 }
 
+variable "chart_namespace_create" {
+  type    = bool
+  default = false
+}
+
 variable "demo_app_create" {
   type    = bool
   default = false

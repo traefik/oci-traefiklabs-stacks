@@ -51,12 +51,9 @@ variableGroups:
 
   - title: "Chart Configuration"
     variables:
+      - chart_namespace_create
       - chart_namespace
       - chart_values
-
-  - title: "Demo Application"
-    variables:
-      - demo_app_create
 
 ######################################################
 ##############    HIDDEN VARIABLES       #############
@@ -115,10 +112,10 @@ variables:
     required: false
     title: Target namespace
 
-  demo_app_create:
+  chart_namespace_create:
     type: boolean
-    title: Deploy demo application and ingressroutes
-    description: It will deploy first steps of walkthrough, up to API Key. See https://github.com/traefik/hub/blob/main/WALKTHROUGH.md"
+    title: Create target namespace
+    description: Allows to create the namespace when it does not exist
 
 #############################################
 ###########    OUTPUT GROUPS     ############
