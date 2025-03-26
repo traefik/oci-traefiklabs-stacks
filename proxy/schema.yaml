@@ -90,7 +90,7 @@ variables:
   oke_cluster_name:
     type: string
     title: Name of OKE Cluster to create
-    default: traefik-demo
+    default: traefik
     minLength: 1
     maxLength: 25
     pattern: "^[a-z][a-zA-Z0-9-]+$"
@@ -128,13 +128,6 @@ outputGroups:
       - chart_status
       - chart_notes
 
-  - title: "Demo application"
-    outputs:
-      - demo_app_dashboard
-      - demo_app_noauth
-      - demo_app_basicauth
-      - demo_app_apikey
-
 #############################################
 ##############     OUTPUTS     ##############
 #############################################
@@ -152,19 +145,6 @@ outputs:
     type: string
     title: Notes
     visible: true
-
-  demo_app_dashboard:
-    type: link
-    title: "Traefik - Local Dashboard"
-  demo_app_noauth:
-    type: link
-    title: "Weather API - No Authentication"
-  demo_app_basicauth:
-    type: link
-    title: "Weather API - Basic Authentication"
-  demo_app_apikey:
-    type: link
-    title: "Weather API - API Key"
 
 # primaryOutputButton is a reference to a link output that creates a primary button
 # on the Application Information tab.
