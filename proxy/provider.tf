@@ -9,7 +9,6 @@ terraform {
     helm = {
       version = "3.0.0-pre2"
     }
-
   }
 }
 
@@ -57,4 +56,3 @@ provider "helm" {
     }
   }
 }
-

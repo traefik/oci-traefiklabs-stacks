@@ -51,6 +51,7 @@ variableGroups:
 
   - title: "Chart Configuration"
     variables:
+      - chart_namespace_create
       - chart_namespace
       - chart_values
 
@@ -89,7 +90,7 @@ variables:
   oke_cluster_name:
     type: string
     title: Name of OKE Cluster to create
-    default: traefik-demo
+    default: traefik
     minLength: 1
     maxLength: 25
     pattern: "^[a-z][a-zA-Z0-9-]+$"
@@ -111,6 +112,11 @@ variables:
     required: false
     title: Target namespace
 
+  chart_namespace_create:
+    type: boolean
+    title: Create target namespace
+    description: "Enable it only if the namespace does not exist"
+
 #############################################
 ###########    OUTPUT GROUPS     ############
 #############################################
@@ -122,7 +128,6 @@ outputGroups:
       - chart_status
       - chart_notes
 
-
 #############################################
 ##############     OUTPUTS     ##############
 #############################################
@@ -132,12 +137,10 @@ outputs:
     type: string
     title: Version
     visible: true
-
   chart_status:
     type: string
     title: Status
     visible: true
-
   chart_notes:
     type: string
     title: Notes

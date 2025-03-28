@@ -5,7 +5,7 @@ resource "helm_release" "traefik" {
   chart      = "traefik"
 
   namespace        = var.chart_namespace
-  create_namespace = true
+  create_namespace = var.chart_namespace_create
 
   # values = [file(var.chart_values)]
   values = [var.chart_values]
