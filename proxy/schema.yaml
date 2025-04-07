@@ -106,16 +106,19 @@ variables:
     multiline: true
     title: Traefik Helm Chart values
     description: "See https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md"
+    default: "ingressRoute:\n  dashboard:\n    enabled: true\n  healthcheck:\n    enabled: true\n    matchRule: PathPrefix(`/healthz`)\n    entryPoints: [\"web\", \"websecure\"]"
 
   chart_namespace:
     type: string
     required: false
     title: Target namespace
+    default: "traefik"
 
   chart_namespace_create:
     type: boolean
     title: Create target namespace
     description: "Enable it only if the namespace does not exist"
+    default: true
 
 #############################################
 ###########    OUTPUT GROUPS     ############
