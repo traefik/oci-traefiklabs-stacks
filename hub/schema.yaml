@@ -106,7 +106,7 @@ variables:
     type: string
     required: true
     title: Traefik Hub Token
-    description: "See https://hub.traefik.io/gateways/new"
+    description: "<strong>Learn how to configure this stack by following the <a href='https://doc.traefik.io/traefik-hub/api-gateway/setup/installation/oracle-oci/oci-marketplace'>official documentation</a></strong>"
 
   chart_hub_version:
     type: string

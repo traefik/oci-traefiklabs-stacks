@@ -1,4 +1,6 @@
 resource "kubernetes_namespace" "traefik" {
+  depends_on = [data.helm_template.traefik]
+
   count = var.chart_create_namespace ? 1 : 0
 
   metadata {
