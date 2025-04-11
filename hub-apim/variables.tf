@@ -32,6 +32,6 @@ variable "chart_namespace" {
   type = string
 }
 variable "chart_create_namespace" {
-  type = bool
+  type    = bool
   default = false
 }
