@@ -34,8 +34,8 @@ locals {
 
   image_id = local.oracle_linux_images[0]
 
-  core_services = data.oci_core_services.current.services
-  network_service = one([for s in local.core_services: s if length(regexall("All [A-Z]+ Services In Oracle Services Network", s.name)) > 0])
+  core_services   = data.oci_core_services.current.services
+  network_service = one([for s in local.core_services : s if length(regexall("All [A-Z]+ Services In Oracle Services Network", s.name)) > 0])
 }
 
 resource "oci_core_vcn" "traefik-demo" {
@@ -406,7 +406,7 @@ resource "oci_containerengine_node_pool" "traefik-demo" {
     size = var.oke_nodes_count
   }
   node_eviction_node_pool_settings {
-    eviction_grace_duration = "PT5M"
+    eviction_grace_duration              = "PT5M"
     is_force_delete_after_grace_duration = true
   }
   node_shape = var.node_shape

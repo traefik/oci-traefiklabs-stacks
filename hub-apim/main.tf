@@ -44,15 +44,15 @@ resource "helm_release" "traefik" {
       value = true
     },
     {
-      name = "image.registry"
+      name  = "image.registry"
       value = "ghcr.io"
     },
     {
-      name = "image.repository"
+      name  = "image.repository"
       value = "traefik/traefik-hub"
     },
     {
-      name = "image.tag"
+      name  = "image.tag"
       value = var.chart_hub_version
     }
   ]
@@ -74,15 +74,15 @@ data "helm_template" "traefik" {
       value = "traefik-hub-license"
     },
     {
-      name = "image.registry"
+      name  = "image.registry"
       value = "ghcr.io"
     },
     {
-      name = "image.repository"
+      name  = "image.repository"
       value = "traefik/traefik-hub"
     },
     {
-      name = "image.tag"
+      name  = "image.tag"
       value = var.chart_hub_version
     }
   ]
