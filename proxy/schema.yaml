@@ -32,6 +32,12 @@ variableGroups:
       - mp_listing_resource_version
       - mp_subscription_enabled
 
+  - title: "Chart Configuration"
+    variables:
+      - chart_namespace_create
+      - chart_namespace
+      - chart_values
+
   - title: "OKE Configuration"
     variables:
       - oke_cluster_create
@@ -48,12 +54,6 @@ variableGroups:
     visible:
       not:
         - ${oke_cluster_create}
-
-  - title: "Chart Configuration"
-    variables:
-      - chart_namespace_create
-      - chart_namespace
-      - chart_values
 
 ######################################################
 ##############    HIDDEN VARIABLES       #############

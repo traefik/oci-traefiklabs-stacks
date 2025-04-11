@@ -1,5 +1,5 @@
 # Title shown in Application Information tab.
-title: Traefik Hub API & AI Gateway
+title: Traefik Hub API Management
 # Sub Title shown in Application Information tab.
 description: Your APIs deserve better
 schemaVersion: 1.1.0
@@ -32,6 +32,14 @@ variableGroups:
       - mp_listing_resource_version
       - mp_subscription_enabled
 
+  - title: "Chart Configuration"
+    variables:
+      - chart_hub_token
+      - chart_create_namespace
+      - chart_namespace
+      - chart_hub_version
+      - chart_values
+
   - title: "OKE Configuration"
     variables:
       - oke_cluster_create
@@ -48,14 +56,6 @@ variableGroups:
     visible:
       not:
         - ${oke_cluster_create}
-
-  - title: "Chart Configuration"
-    variables:
-      - chart_create_namespace
-      - chart_namespace
-      - chart_hub_token
-      - chart_hub_version
-      - chart_values
 
 ######################################################
 ##############    HIDDEN VARIABLES       #############
@@ -106,7 +106,7 @@ variables:
     type: string
     required: true
     title: Traefik Hub Token
-    description: "See https://hub.traefik.io/gateways/new"
+    description: "<strong>Don't have a Traefik Hub account? Request a free trial <a href=\"https://info.traefik.io/try-traefik-hub-platform\">here</a>. For existing users, please follow our <a href=\"https://doc.traefik.io/traefik-hub/api-gateway/setup/installation/oracle-oci/oci-marketplace#create-a-new-traefik-hub-gateway\">documentation</a> to create a new token.</strong>"
 
   chart_hub_version:
     type: string
