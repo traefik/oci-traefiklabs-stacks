@@ -32,6 +32,14 @@ variableGroups:
       - mp_listing_resource_version
       - mp_subscription_enabled
 
+  - title: "Chart Configuration"
+    variables:
+      - chart_hub_token
+      - chart_create_namespace
+      - chart_namespace
+      - chart_hub_version
+      - chart_values
+
   - title: "OKE Configuration"
     variables:
       - oke_cluster_create
@@ -48,14 +56,6 @@ variableGroups:
     visible:
       not:
         - ${oke_cluster_create}
-
-  - title: "Chart Configuration"
-    variables:
-      - chart_create_namespace
-      - chart_namespace
-      - chart_hub_token
-      - chart_hub_version
-      - chart_values
 
 ######################################################
 ##############    HIDDEN VARIABLES       #############
@@ -106,13 +106,15 @@ variables:
     type: string
     required: true
     title: Traefik Hub Token
-    description: "See https://hub.traefik.io/agents/new"
+    description: "<strong>Don't have a Traefik Hub account? Request a free trial <a href=\"https://info.traefik.io/try-traefik-hub-platform\">here</a>. For existing users, please follow our <a href=\"https://doc.traefik.io/traefik-hub/api-gateway/setup/installation/oracle-oci/oci-marketplace#create-a-new-traefik-hub-gateway\">documentation</a> to create a new token.</strong>"
 
   chart_hub_version:
     type: string
     required: true
     title: Traefik Hub Version
     description: "vX.Y.Z"
+    pattern: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    default: "v3.15.0"
 
   chart_values:
     type: text
@@ -120,16 +122,19 @@ variables:
     multiline: true
     title: Traefik Helm Chart values
     description: "See https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md"
+    default: "ingressRoute:\n  dashboard:\n    enabled: true\n  healthcheck:\n    enabled: true\n    matchRule: PathPrefix(`/healthz`)\n    entryPoints: [\"web\", \"websecure\"]"
 
   chart_namespace:
     type: string
     required: false
     title: Target namespace
+    default: "traefik"
 
   chart_create_namespace:
     type: boolean
     title: Create target namespace
     description: "Enable it only if the namespace does not exist"
+    default: true
 
 #############################################
 ###########    OUTPUT GROUPS     ############
