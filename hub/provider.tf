@@ -25,6 +25,7 @@ module "oke" {
   count  = var.oke_cluster_create ? 1 : 0
 
   tenancy_ocid     = var.tenancy_ocid
+  compartment_ocid = var.compartment_ocid
   region           = var.region
   oke_display_name = var.oke_cluster_name
   providers = {
