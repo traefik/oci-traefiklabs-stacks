@@ -26,6 +26,7 @@ variableGroups:
 #"variables used internally - not exposed to end user"
       - tenancy_ocid
       - region
+      - local_run
       - marketplace_source_images
       - mp_listing_id
       - mp_listing_resource_id

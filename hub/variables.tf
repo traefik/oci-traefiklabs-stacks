@@ -42,3 +42,9 @@ variable "chart_create_namespace" {
   type    = bool
   default = false
 }
+
+// Can be set to true for local development
+variable "local_run" {
+  type    = bool
+  default = false
+}
