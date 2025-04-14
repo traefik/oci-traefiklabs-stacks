@@ -78,7 +78,7 @@ resource "oci_core_route_table" "traefik-demo" {
   }
   route_rules {
     description       = "traffic to OCI services"
-    destination       = "all-iad-services-in-oracle-services-network"
+    destination       = local.network_service.cidr_block
     destination_type  = "SERVICE_CIDR_BLOCK"
     network_entity_id = oci_core_service_gateway.traefik-demo.id
   }
@@ -263,7 +263,7 @@ resource "oci_core_security_list" "kubernetes_api_endpoint" {
 
   egress_security_rules {
     description      = "Allow Kubernetes Control Plane to communicate with OKE"
-    destination      = "all-iad-services-in-oracle-services-network"
+    destination      = local.network_service.cidr_block
     destination_type = "SERVICE_CIDR_BLOCK"
     protocol         = "6"
     stateless        = "false"
