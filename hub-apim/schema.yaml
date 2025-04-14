@@ -85,7 +85,7 @@ variables:
     type: oci:identity:compartment:id
     required: true
     title: OKE Compartment
-    description: The compartment in which to create or use OKE cluster
+    description: The compartment of OKE cluster
     default: compartment_ocid
 
   oke_cluster_id:
