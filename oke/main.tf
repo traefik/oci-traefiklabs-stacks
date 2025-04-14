@@ -32,7 +32,11 @@ locals {
 
   oracle_linux_images = [for source in local.oke_sources : source.image_id if length(regexall("Oracle-Linux-\\d+\\.\\d+-[0-9.]{10}-\\d+-OKE-${substr(local.kubernetes_version, 1, -1)}-[0-9]*", source.source_name)) > 0]
 
+  # See https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/index.htm
   image_id = local.oracle_linux_images[0]
+
+  shapes     = data.oci_containerengine_node_pool_option.current.shapes
+  node_shape = local.shapes[length(local.shapes) - 1]
 
   core_services   = data.oci_core_services.current.services
   network_service = one([for s in local.core_services : s if length(regexall("All [A-Z]+ Services In Oracle Services Network", s.name)) > 0])
@@ -409,7 +413,7 @@ resource "oci_containerengine_node_pool" "traefik-demo" {
     eviction_grace_duration              = "PT2M"
     is_force_delete_after_grace_duration = true
   }
-  node_shape = var.node_shape
+  node_shape = local.node_shape
   node_shape_config {
     memory_in_gbs = var.oke_nodes_mem_in_gb
     ocpus         = var.oke_nodes_cpu
