@@ -23,5 +23,5 @@ variable "oke_nodes_cpu" {
 
 variable "oke_nodes_mem_in_gb" {
   type    = string
-  default = "4"
+  default = "8"
 }

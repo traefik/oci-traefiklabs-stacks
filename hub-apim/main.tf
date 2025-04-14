@@ -1,5 +1,11 @@
+data "oci_containerengine_node_pools" "target" {
+  compartment_id = var.compartment_id
+  cluster_id     = var.oke_cluster_create ? module.oke[0].cluster_id : var.oke_cluster_id
+  state          = var.oke_cluster_create ? module.oke[0].pool_state : "ACTIVE"
+}
+
 resource "kubernetes_namespace" "traefik" {
-  depends_on = [data.helm_template.traefik]
+  depends_on = [data.oci_containerengine_node_pools.target]
 
   count = var.chart_create_namespace ? 1 : 0
 
