@@ -406,7 +406,7 @@ resource "oci_containerengine_node_pool" "traefik-demo" {
     size = var.oke_nodes_count
   }
   node_eviction_node_pool_settings {
-    eviction_grace_duration              = "PT5M"
+    eviction_grace_duration              = "PT2M"
     is_force_delete_after_grace_duration = true
   }
   node_shape = var.node_shape

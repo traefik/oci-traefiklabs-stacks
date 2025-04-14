@@ -1,7 +1,7 @@
 data "oci_containerengine_node_pools" "target" {
-  compartment_id = var.compartment_id
+  compartment_id = var.compartment_ocid
   cluster_id     = var.oke_cluster_create ? module.oke[0].cluster_id : var.oke_cluster_id
-  state          = var.oke_cluster_create ? module.oke[0].pool_state : "ACTIVE"
+  state          = var.oke_cluster_create ? [module.oke[0].pool_state] : ["ACTIVE"]
 }
 
 resource "helm_release" "traefik" {
