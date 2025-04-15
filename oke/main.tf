@@ -35,8 +35,9 @@ locals {
   # See https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/index.htm
   image_id = local.oracle_linux_images[0]
 
-  shapes     = data.oci_containerengine_node_pool_option.current.shapes
-  node_shape = local.shapes[length(local.shapes) - 1]
+  shapes      = data.oci_containerengine_node_pool_option.current.shapes
+  flex_shapes = [for shape in local.shapes : shape if length(regexall("VM\\.Standard(\\.E[0-9]|[0-9])\\.Flex", shape)) > 0]
+  node_shape  = local.flex_shapes[length(local.flex_shapes) - 1]
 
   core_services   = data.oci_core_services.current.services
   network_service = one([for s in local.core_services : s if length(regexall("All [A-Z]+ Services In Oracle Services Network", s.name)) > 0])
