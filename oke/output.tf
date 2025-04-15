@@ -14,6 +14,14 @@ output "image_id" {
   value = local.image_id
 }
 
+output "node_shape" {
+  value = local.node_shape
+}
+
 output "cluster_id" {
   value = oci_containerengine_cluster.traefik-demo.id
+}
+
+output "pool_state" {
+  value = oci_containerengine_node_pool.traefik-demo.state
 }

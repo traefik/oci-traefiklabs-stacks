@@ -1,5 +1,12 @@
+data "oci_containerengine_node_pools" "target" {
+  compartment_id = var.compartment_ocid
+  cluster_id     = var.oke_cluster_create ? module.oke[0].cluster_id : var.oke_cluster_id
+  state          = var.oke_cluster_create ? [module.oke[0].pool_state] : ["ACTIVE"]
+}
+
 resource "helm_release" "traefik" {
-  name = "traefik"
+  depends_on = [data.oci_containerengine_node_pools.target]
+  name       = "traefik"
 
   repository = "https://traefik.github.io/charts"
   chart      = "traefik"

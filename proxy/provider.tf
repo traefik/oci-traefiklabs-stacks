@@ -22,6 +22,7 @@ module "oke" {
   count  = var.oke_cluster_create ? 1 : 0
 
   tenancy_ocid     = var.tenancy_ocid
+  compartment_ocid = var.compartment_ocid
   region           = var.region
   oke_display_name = var.oke_cluster_name
   providers = {
@@ -41,16 +42,16 @@ locals {
   kube_config_content    = data.oci_containerengine_cluster_kube_config.target.content
   cluster_endpoint       = yamldecode(local.kube_config_content)["clusters"][0]["cluster"]["server"]
   cluster_ca_certificate = base64decode(yamldecode(local.kube_config_content)["clusters"][0]["cluster"]["certificate-authority-data"])
-  docker_args = fileexists("/home/orm/.oci/config") ? [
-    "run", "--rm", "-t", "-u", "1101:1101", "-v", "/home/orm:/home/orm", "-e", "OCI_CLI_AUTH", "-e",
-    "OCI_CLI_CONFIG_FILE", "-e", "OCI_CLI_CLOUD_SHELL", "-e", "OCI_CLI_USE_INSTANCE_METADATA_SERVICE",
-    "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id",
-    data.oci_containerengine_cluster.target.id, "--region", var.region
-    ] : [
+  docker_args = var.local_run ? [
     "run", "--rm", "-t", "-v", "${pathexpand("~/.oci")}:/oracle/.oci", "-v",
     "${pathexpand("~/.oci")}:${pathexpand("~/.oci")}", "-e",
     "OCI_CLI_SUPPRESS_FILE_PERMISSIONS_WARNING=True", "ghcr.io/oracle/oci-cli", "ce", "cluster",
     "generate-token", "--cluster-id", data.oci_containerengine_cluster.target.id, "--region", var.region
+    ] : [
+    "run", "--rm", "-t", "-u", "1101:1101", "-v", "/home/orm:/home/orm", "-e", "OCI_CLI_AUTH", "-e",
+    "OCI_CLI_CONFIG_FILE", "-e", "OCI_CLI_CLOUD_SHELL", "-e", "OCI_CLI_USE_INSTANCE_METADATA_SERVICE",
+    "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id",
+    data.oci_containerengine_cluster.target.id, "--region", var.region
   ]
 }
 

@@ -6,23 +6,23 @@ data "oci_core_services" "current" {
 }
 
 data "oci_identity_availability_domain" "ad1" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   ad_number      = 1
 }
 
 data "oci_identity_availability_domain" "ad2" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   ad_number      = 2
 }
 
 data "oci_identity_availability_domain" "ad3" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   ad_number      = 3
 }
 
 data "oci_containerengine_node_pool_option" "current" {
   node_pool_option_id = oci_containerengine_cluster.traefik-demo.id
-  compartment_id      = var.tenancy_ocid
+  compartment_id      = var.compartment_ocid
 }
 
 locals {
@@ -32,7 +32,12 @@ locals {
 
   oracle_linux_images = [for source in local.oke_sources : source.image_id if length(regexall("Oracle-Linux-\\d+\\.\\d+-[0-9.]{10}-\\d+-OKE-${substr(local.kubernetes_version, 1, -1)}-[0-9]*", source.source_name)) > 0]
 
+  # See https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/index.htm
   image_id = local.oracle_linux_images[0]
+
+  shapes      = data.oci_containerengine_node_pool_option.current.shapes
+  flex_shapes = [for shape in local.shapes : shape if length(regexall("VM\\.Standard(\\.E[0-9]|[0-9])\\.Flex", shape)) > 0]
+  node_shape  = local.flex_shapes[length(local.flex_shapes) - 1]
 
   core_services   = data.oci_core_services.current.services
   network_service = one([for s in local.core_services : s if length(regexall("All [A-Z]+ Services In Oracle Services Network", s.name)) > 0])
@@ -40,26 +45,26 @@ locals {
 
 resource "oci_core_vcn" "traefik-demo" {
   cidr_block     = "10.0.0.0/16"
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = var.oke_display_name
   dns_label      = "traefikdemo"
 }
 
 resource "oci_core_internet_gateway" "traefik-demo" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = var.oke_display_name
   enabled        = "true"
   vcn_id         = oci_core_vcn.traefik-demo.id
 }
 
 resource "oci_core_nat_gateway" "traefik-demo" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = var.oke_display_name
   vcn_id         = oci_core_vcn.traefik-demo.id
 }
 
 resource "oci_core_service_gateway" "traefik-demo" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = var.oke_display_name
   services {
     service_id = local.network_service.id
@@ -68,7 +73,7 @@ resource "oci_core_service_gateway" "traefik-demo" {
 }
 
 resource "oci_core_route_table" "traefik-demo" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = "oke-private-${var.oke_display_name}"
   route_rules {
     description       = "traffic to the internet"
@@ -87,7 +92,7 @@ resource "oci_core_route_table" "traefik-demo" {
 
 resource "oci_core_subnet" "svclb" {
   cidr_block                 = "10.0.20.0/24"
-  compartment_id             = var.tenancy_ocid
+  compartment_id             = var.compartment_ocid
   display_name               = "oke-${var.oke_display_name}-svclb-regional"
   dns_label                  = "lbsubde4f0e3f7"
   prohibit_public_ip_on_vnic = "false"
@@ -98,7 +103,7 @@ resource "oci_core_subnet" "svclb" {
 
 resource "oci_core_subnet" "nodes" {
   cidr_block                 = "10.0.10.0/24"
-  compartment_id             = var.tenancy_ocid
+  compartment_id             = var.compartment_ocid
   display_name               = "oke-${var.oke_display_name}-nodesubnet-regional"
   dns_label                  = "sub58536a37a"
   prohibit_public_ip_on_vnic = "true"
@@ -109,7 +114,7 @@ resource "oci_core_subnet" "nodes" {
 
 resource "oci_core_subnet" "kubernetes_api_endpoint" {
   cidr_block                 = "10.0.0.0/28"
-  compartment_id             = var.tenancy_ocid
+  compartment_id             = var.compartment_ocid
   display_name               = "oke-${var.oke_display_name}-k8sApiEndpoint-regional"
   dns_label                  = "subd14ec26fe"
   prohibit_public_ip_on_vnic = "false"
@@ -130,7 +135,7 @@ resource "oci_core_default_route_table" "traefik-demo" {
 }
 
 resource "oci_core_security_list" "svclb" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = "oke-svclb-${var.oke_display_name}"
   vcn_id         = oci_core_vcn.traefik-demo.id
 
@@ -143,7 +148,7 @@ resource "oci_core_security_list" "svclb" {
 }
 
 resource "oci_core_security_list" "nodes" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = "oke-nodes-${var.oke_display_name}"
   egress_security_rules {
     description      = "Allow pods on one worker node to communicate with pods on other worker nodes"
@@ -258,7 +263,7 @@ resource "oci_core_security_list" "nodes" {
 }
 
 resource "oci_core_security_list" "kubernetes_api_endpoint" {
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   display_name   = "oke-k8sApiEndpoint-${var.oke_display_name}"
 
   egress_security_rules {
@@ -341,7 +346,7 @@ resource "oci_containerengine_cluster" "traefik-demo" {
   cluster_pod_network_options {
     cni_type = "OCI_VCN_IP_NATIVE"
   }
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   endpoint_config {
     is_public_ip_enabled = "true"
     subnet_id            = oci_core_subnet.kubernetes_api_endpoint.id
@@ -373,7 +378,7 @@ resource "oci_containerengine_cluster" "traefik-demo" {
 
 resource "oci_containerengine_node_pool" "traefik-demo" {
   cluster_id     = oci_containerengine_cluster.traefik-demo.id
-  compartment_id = var.tenancy_ocid
+  compartment_id = var.compartment_ocid
   freeform_tags = {
     "OKEnodePoolName" = var.oke_display_name
   }
@@ -406,10 +411,10 @@ resource "oci_containerengine_node_pool" "traefik-demo" {
     size = var.oke_nodes_count
   }
   node_eviction_node_pool_settings {
-    eviction_grace_duration              = "PT5M"
+    eviction_grace_duration              = "PT2M"
     is_force_delete_after_grace_duration = true
   }
-  node_shape = var.node_shape
+  node_shape = local.node_shape
   node_shape_config {
     memory_in_gbs = var.oke_nodes_mem_in_gb
     ocpus         = var.oke_nodes_cpu

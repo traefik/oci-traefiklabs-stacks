@@ -26,6 +26,7 @@ variableGroups:
 #"variables used internally - not exposed to end user"
       - tenancy_ocid
       - region
+      - local_run
       - marketplace_source_images
       - mp_listing_id
       - mp_listing_resource_id
@@ -42,6 +43,7 @@ variableGroups:
 
   - title: "OKE Configuration"
     variables:
+      - compartment_ocid
       - oke_cluster_create
       - oke_insecure
 
@@ -79,10 +81,19 @@ variables:
 ##############    REQUIRED VARIABLES     #############
 ######################################################
 
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: OKE Compartment
+    description: The compartment of OKE cluster
+    default: compartment_ocid
+
   oke_cluster_id:
-    type: string
-    title: OKE Cluster ID
-    description: The Oracle Cloud ID of the OKE cluster
+    type: oci:container:cluster:id
+    title: OKE Cluster
+    description: The OKE cluster where to deploy Traefik Hub API & AI Gateway
+    dependsOn:
+      compartmentId: compartment_ocid
 
   oke_cluster_create:
     type: boolean
