@@ -10,16 +10,6 @@ data "oci_identity_availability_domain" "ad1" {
   ad_number      = 1
 }
 
-data "oci_identity_availability_domain" "ad2" {
-  compartment_id = var.compartment_ocid
-  ad_number      = 2
-}
-
-data "oci_identity_availability_domain" "ad3" {
-  compartment_id = var.compartment_ocid
-  ad_number      = 3
-}
-
 data "oci_containerengine_node_pool_option" "current" {
   node_pool_option_id = oci_containerengine_cluster.traefik-demo.id
   compartment_id      = var.compartment_ocid
@@ -395,14 +385,6 @@ resource "oci_containerengine_node_pool" "traefik-demo" {
     node_pool_pod_network_option_details {
       cni_type       = "OCI_VCN_IP_NATIVE"
       pod_subnet_ids = [oci_core_subnet.nodes.id]
-    }
-    placement_configs {
-      availability_domain = data.oci_identity_availability_domain.ad3.name
-      subnet_id           = oci_core_subnet.nodes.id
-    }
-    placement_configs {
-      availability_domain = data.oci_identity_availability_domain.ad2.name
-      subnet_id           = oci_core_subnet.nodes.id
     }
     placement_configs {
       availability_domain = data.oci_identity_availability_domain.ad1.name

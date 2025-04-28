@@ -45,16 +45,17 @@ variableGroups:
     variables:
       - compartment_ocid
       - oke_cluster_create
-      - oke_insecure
 
   - title: "Create basic OKE"
     variables:
       - oke_cluster_name
+      - oke_insecure
     visible: ${oke_cluster_create}
 
   - title: "Use existing OKE"
     variables:
       - oke_cluster_id
+      - oke_insecure
     visible:
       not:
         - ${oke_cluster_create}
@@ -98,7 +99,8 @@ variables:
   oke_cluster_create:
     type: boolean
     title: Create basic OKE Cluster
-    description: 3 nodes (VM.Standard.E3.Flex) / 2 OCPU / 4 GB RAM / latest OKE version
+    description: 1 node in first AD / 2 OCPU / 4 GB RAM / latest OKE version
+    default: true
 
   oke_cluster_name:
     type: string
@@ -125,7 +127,7 @@ variables:
     title: Traefik Hub Version
     description: "vX.Y.Z"
     pattern: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
-    default: "v3.15.0"
+    default: "v3.16.0"
 
   chart_values:
     type: text
