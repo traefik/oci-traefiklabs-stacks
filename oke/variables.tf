@@ -13,7 +13,7 @@ variable "node_shape" {
 
 variable "oke_nodes_count" {
   type    = string
-  default = "3"
+  default = "1"
 }
 
 variable "oke_nodes_cpu" {
