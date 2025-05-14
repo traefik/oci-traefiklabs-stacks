@@ -16,7 +16,7 @@ data "oci_containerengine_node_pool_option" "current" {
 }
 
 locals {
-  kubernetes_version = reverse(data.oci_containerengine_cluster_option.current.kubernetes_versions)[0]
+  kubernetes_version = reverse(data.oci_containerengine_cluster_option.current.kubernetes_versions)[1]
 
   oke_sources = data.oci_containerengine_node_pool_option.current.sources
 
