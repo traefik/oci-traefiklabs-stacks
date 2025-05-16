@@ -119,7 +119,7 @@ variables:
     multiline: true
     title: Traefik Helm Chart values
     description: "See https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md"
-    default: "ingressRoute:\n  dashboard:\n    enabled: true\n  healthcheck:\n    enabled: true\n    matchRule: PathPrefix(`/healthz`)\n    entryPoints: [\"web\", \"websecure\"]"
+    default: "ingressRoute:\n  dashboard:\n    enabled: true"
 
   chart_namespace:
     type: string

@@ -133,7 +133,7 @@ variables:
     required: true
     multiline: true
     title: Traefik Helm Chart values
-    default: "ingressRoute:\n  dashboard:\n    enabled: true\n  healthcheck:\n    enabled: true\n    matchRule: PathPrefix(`/healthz`)\n    entryPoints: [\"web\", \"websecure\"]"
+    default: "ingressRoute:\n  dashboard:\n    enabled: true"
 
   chart_namespace:
     type: string
