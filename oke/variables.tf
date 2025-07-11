@@ -25,3 +25,8 @@ variable "oke_nodes_mem_in_gb" {
   type    = string
   default = "8"
 }
+
+variable "oke_kubernetes_version" {
+  type    = string
+  default = "v1.33"
+}
