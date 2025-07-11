@@ -126,7 +126,7 @@ variables:
     required: true
     title: Traefik Hub Version
     pattern: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
-    default: "v3.16.0"
+    default: "v3.17.0"
 
   chart_values:
     type: text

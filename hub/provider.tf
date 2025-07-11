@@ -7,10 +7,10 @@ terraform {
       version = "7.0.0"
     }
     helm = {
-      version = "3.0.0-pre2"
+      version = "3.0.2"
     }
     kubernetes = {
-      version = "2.36.0"
+      version = "2.37.1"
     }
   }
 }

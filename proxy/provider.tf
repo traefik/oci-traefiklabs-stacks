@@ -7,7 +7,7 @@ terraform {
       version = "7.0.0"
     }
     helm = {
-      version = "3.0.0-pre2"
+      version = "3.0.2"
     }
   }
 }
