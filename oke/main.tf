@@ -11,16 +11,18 @@ data "oci_identity_availability_domain" "ad1" {
 }
 
 data "oci_containerengine_node_pool_option" "current" {
-  node_pool_option_id = oci_containerengine_cluster.traefik-demo.id
+  node_pool_option_id = data.oci_containerengine_cluster_option.current.cluster_option_id
   compartment_id      = var.compartment_ocid
 }
 
 locals {
-  kubernetes_version = reverse(data.oci_containerengine_cluster_option.current.kubernetes_versions)[1]
+  # take the latest patch version of kubernetes minor
+  # when a new version is released, old patch node pool images are deleted
+  # e.g.: v1.33.1 is out, then all v1.33.0 are removed and there is an integrity check between control-plane and node pool
+  kubernetes_version = reverse([for version in data.oci_containerengine_cluster_option.current.kubernetes_versions : version if length(regexall("${var.oke_kubernetes_version}\\.[0-9]+", version)) > 0])[0]
+  oke_sources        = data.oci_containerengine_node_pool_option.current.sources
 
-  oke_sources = data.oci_containerengine_node_pool_option.current.sources
-
-  oracle_linux_images = [for source in local.oke_sources : source.image_id if length(regexall("Oracle-Linux-\\d+\\.\\d+-[0-9.]{10}-\\d+-OKE-${substr(local.kubernetes_version, 1, -1)}-[0-9]*", source.source_name)) > 0]
+  oracle_linux_images = [for source in local.oke_sources : source.image_id if length(regexall("Oracle-Linux-\\d+\\.\\d+-[0-9.]{10}-\\d+-OKE-${substr(local.kubernetes_version, 1, -1)}+-[0-9]*", source.source_name)) > 0]
 
   # See https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/index.htm
   image_id = local.oracle_linux_images[0]
