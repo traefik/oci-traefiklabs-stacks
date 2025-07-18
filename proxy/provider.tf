@@ -45,12 +45,12 @@ locals {
   docker_args = var.local_run ? [
     "run", "--rm", "-t", "-v", "${pathexpand("~/.oci")}:/oracle/.oci", "-v",
     "${pathexpand("~/.oci")}:${pathexpand("~/.oci")}", "-e",
-    "OCI_CLI_SUPPRESS_FILE_PERMISSIONS_WARNING=True", "ghcr.io/oracle/oci-cli", "ce", "cluster",
+    "OCI_CLI_SUPPRESS_FILE_PERMISSIONS_WARNING=True", "ghcr.io/oracle/oci-cli:20250716", "ce", "cluster",
     "generate-token", "--cluster-id", data.oci_containerengine_cluster.target.id, "--region", var.region
     ] : [
-    "run", "--rm", "-t", "-u", "1101:1101", "-v", "/home/orm:/home/orm", "-e", "OCI_CLI_AUTH", "-e",
+    "run", "--rm", "-t", "--userns", "keep-id:uid=1000,gid=1000", "-v", "/home/orm:/home/orm", "-e", "OCI_CLI_AUTH", "-e",
     "OCI_CLI_CONFIG_FILE", "-e", "OCI_CLI_CLOUD_SHELL", "-e", "OCI_CLI_USE_INSTANCE_METADATA_SERVICE",
-    "ghcr.io/oracle/oci-cli", "ce", "cluster", "generate-token", "--cluster-id",
+    "ghcr.io/oracle/oci-cli:20250716", "ce", "cluster", "generate-token", "--cluster-id",
     data.oci_containerengine_cluster.target.id, "--region", var.region
   ]
 }
