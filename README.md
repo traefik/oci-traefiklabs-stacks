@@ -87,4 +87,4 @@ EOT
    - click on Back
    - on the newly created version > right menu > Mark As Default > OK
    - Submit
-7. go to Listings > Submitted, for each click on Publish
+9. go to Listings > Submitted, for each click on Publish
