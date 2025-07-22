@@ -78,7 +78,7 @@ EOT
    - select the Stack OCID
    - check the "Mandatory Guidelines" box
    - click on Create
-7. go to Listings > Published
+7. go to Listings > Started
 8. for each:
    - click on right menu > New Version > OK
    - click on Listing > Started > right menu > Edit > App Install Package > right menu > New Version > OK
@@ -87,3 +87,4 @@ EOT
    - click on Back
    - on the newly created version > right menu > Mark As Default > OK
    - Submit
+7. go to Listings > Submitted, for each click on Publish
